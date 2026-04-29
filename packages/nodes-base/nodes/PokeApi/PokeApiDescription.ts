@@ -16,7 +16,7 @@ type PokemonResponse = {
 	sprites?: { front_default?: string | null };
 };
 
-const simplifyPokemonForOutput = (
+export const simplifyPokemonForOutput = (
 	items: INodeExecutionData[],
 	simplify: boolean,
 ): INodeExecutionData[] => {
@@ -51,7 +51,7 @@ const simplifyPokemonForOutput = (
 	return [{ json: simplified }];
 };
 
-async function simplifyGetPokemonResponse(
+export async function simplifyGetPokemonResponse(
 	this: IExecuteSingleFunctions,
 	items: INodeExecutionData[],
 	_response: IN8nHttpFullResponse,
@@ -79,7 +79,7 @@ export const pokemonOperations: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'GET',
-						url: '=/pokemon/{{$parameter["nameOrId"]}}',
+						url: '=pokemon/{{$parameter["nameOrId"]}}',
 					},
 					output: {
 						postReceive: [simplifyGetPokemonResponse],
@@ -94,7 +94,7 @@ export const pokemonOperations: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'GET',
-						url: '/pokemon',
+						url: 'pokemon',
 					},
 					output: {
 						postReceive: [

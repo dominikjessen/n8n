@@ -20,7 +20,7 @@ export class PokeApi implements INodeType {
 		outputs: [NodeConnectionTypes.Main],
 		credentials: [],
 		requestDefaults: {
-			baseURL: 'https://pokeapi.co/api/v2',
+			baseURL: 'https://pokeapi.co/api/v2/',
 		},
 		properties: [
 			{
