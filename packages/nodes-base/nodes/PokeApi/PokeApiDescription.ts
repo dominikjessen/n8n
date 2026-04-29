@@ -33,6 +33,16 @@ export const pokemonOperations: INodeProperties[] = [
 						method: 'GET',
 						url: '/pokemon',
 					},
+					output: {
+						postReceive: [
+							{
+								type: 'rootProperty',
+								properties: {
+									property: 'results',
+								},
+							},
+						],
+					},
 				},
 				action: 'Get many pokemon',
 			},
@@ -69,6 +79,22 @@ export const pokemonFields: INodeProperties[] = [
 			},
 		},
 		description: 'Whether to return all results or only up to a given limit',
+		routing: {
+			operations: {
+				pagination: {
+					type: 'generic',
+					properties: {
+						continue: '={{ !!$response.body?.next }}',
+						request: {
+							qs: {
+								offset:
+									'={{ Number((($response.body?.next || "").match(/(?:\\?|&)offset=(\\d+)/) || [])[1] || 0) }}',
+							},
+						},
+					},
+				},
+			},
+		},
 	},
 	{
 		displayName: 'Limit',
@@ -87,6 +113,38 @@ export const pokemonFields: INodeProperties[] = [
 			},
 		},
 		description: 'Max number of results to return',
+		routing: {
+			send: {
+				type: 'query',
+				property: 'limit',
+			},
+			output: {
+				maxResults: '={{$value}}',
+			},
+		},
+	},
+	{
+		displayName: 'Offset',
+		name: 'offset',
+		type: 'number',
+		default: 0,
+		typeOptions: {
+			minValue: 0,
+		},
+		displayOptions: {
+			show: {
+				resource: ['pokemon'],
+				operation: ['getAll'],
+				returnAll: [false],
+			},
+		},
+		description: 'Number of results to skip before returning Pokemon',
+		routing: {
+			send: {
+				type: 'query',
+				property: 'offset',
+			},
+		},
 	},
 	{
 		displayName: 'Simplify',
