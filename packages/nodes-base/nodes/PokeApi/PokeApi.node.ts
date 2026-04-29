@@ -1,6 +1,8 @@
 import type { INodeType, INodeTypeDescription } from 'n8n-workflow';
 import { NodeConnectionTypes } from 'n8n-workflow';
 
+import { pokemonFields, pokemonOperations } from './PokeApiDescription';
+
 export class PokeApi implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'PokeAPI',
@@ -20,6 +22,22 @@ export class PokeApi implements INodeType {
 		requestDefaults: {
 			baseURL: 'https://pokeapi.co/api/v2',
 		},
-		properties: [],
+		properties: [
+			{
+				displayName: 'Resource',
+				name: 'resource',
+				type: 'options',
+				noDataExpression: true,
+				options: [
+					{
+						name: 'Pokemon',
+						value: 'pokemon',
+					},
+				],
+				default: 'pokemon',
+			},
+			...pokemonOperations,
+			...pokemonFields,
+		],
 	};
 }
